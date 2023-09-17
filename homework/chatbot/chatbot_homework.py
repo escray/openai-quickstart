@@ -72,37 +72,14 @@ def change_enable_chat(enable):
 
 def launch_gradio():
   demo = gr.ChatInterface(
-    scene_radio = gr.Radio(
-      [(member.name, member.value) for member in SceneEnum],
-      label="切换话题",
-      info="请选择希望咨询的话题",
-      value=SceneEnum.家装
-    )
-    enable_chat_checkbox = gr.Checkbox(
-      label="使用 GPT",
-      info="通过 GPT 更智能的回答问题",
-      value=ENABLE_CHAT,
-    )
-
-    chatbot = gr.Chatbot([], elem_id="chatbot")
-
-    txt = gr.Textbox(
-      scale=4,
-      show_label=False,
-      placeholder=" 请输入你想咨询的问题",
-      container=False,
-    )
-    txt_msg = txt.submit(add_text, [chatbot, txt], [chatbot, txt], queue=True).then(bot, chatbot, chatbot)
-    txt_msg.then(lambda: gr.update(interactive=True), None, [txt], queue=True)
-    scene_radio.change(fn=change_scene, inputs=scene_radio, outputs=chatbot)
-    enable_chat_checkbox.change(fn=change_enable_chat, inputs=enable_chat_checkbox)
-
-    # fn = sales_chat,
-    title="聊天机器人",
+    fn = bot,
+    title="聊天",
     # retry_btn=None,
     #
     chatbot=gr.Chatbot(height=600),
   )
+
+  demo.launch(share=True, server_name="0.0.0.0")
 
 def launch_gradio_by_blocks():
   with gr.Blocks(title="聊天机器人") as blocks:
@@ -121,7 +98,7 @@ def launch_gradio_by_blocks():
             value=ENABLE_CHAT,
           )
       with gr.Column(scale=4):
-        chatbot = gr.Chatbot([], elem_id="chatbot", bubble_full_with=False)
+        chatbot = gr.Chatbot([], elem_id="chatbot")
         with gr.Row():
           txt = gr.Textbox(
             scale=4,
@@ -139,5 +116,5 @@ def launch_gradio_by_blocks():
 
 if __name__ == "__main__":
   initialize_sales_bot()
-  # launch_gradio_by_blocks()
-  launch_gradio()
+  launch_gradio_by_blocks()
+  # launch_gradio()
