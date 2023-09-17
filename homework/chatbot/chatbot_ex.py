@@ -8,9 +8,6 @@ from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 
-# def initialize_sales_bot(vector_store_dir: str="real_estate_sales"):
-#   db = FAISS.load_local(vector_store_dir, OpenAIEmbeddings())
-#   llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 def initialize_sales_bot(vector_store_dir: str="real_estate_sales"):
   db = FAISS.load_local(vector_store_dir, OpenAIEmbeddings())
   llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
@@ -24,21 +21,6 @@ def initialize_sales_bot(vector_store_dir: str="real_estate_sales"):
 
   SALES_BOT.return_source_documents = True
   return SALES_BOT
-
-# def initialize_sales_bot(vector_store_dir: str="real_estate_sales"):
-#   db = FAISS.load_local(vector_store_dir, OpenAIEmbeddings())
-#   llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-
-#   global SALES_BOT
-#   SALES_BOT = RetrievalQA.from_chain_type(
-#     llm,
-#     retrieval=db.as_retriever(
-#       search_type="similarity_score_threshold",
-#       search_kwargs={"score_threshold": 0.8}))
-
-#   SALES_BOT.return_source_documents = True
-
-#   return SALES_BOT
 
 def sales_chat(message, history):
   print(f"[message]{message}")

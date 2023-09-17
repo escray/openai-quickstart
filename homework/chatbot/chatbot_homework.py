@@ -14,11 +14,11 @@ ENABLE_CHAT = False
 # todo：电器、家装、教育
 @unique
 class SceneEnum(Enum):
-  房产 = "real_estate"
-  iPhone = "iphone"
-  英语培训 = "english_training"
+  家装 = "home_decoration"
+  教培 = "education_training"
+  家电 = "household_appliances"
 
-def initialize_sales_bot(vector_store_dir: str = "real_estate_sales"):
+def initialize_sales_bot(vector_store_dir: str = "home_decoration_sales"):
   db = FAISS.load_local(vector_store_dir, OpenAIEmbeddings())
   llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
@@ -46,7 +46,7 @@ def bot(history, text):
   query = history[-1][0]
   ans = SALES_BOT({"query": query})
 
-  response = "这个问题我要问问领导"
+  response = "这个问题，我需要请教一下其他的专家，稍晚给您答复"
 
   if  ans["source_documents"] or ENABLE_CHAT:
     print(f"[result]{ans['result']}")
@@ -71,19 +71,19 @@ def change_enable_chat(enable):
   ENABLE_CHAT = enable
 
 def launch_gradio_by_blocks():
-  with gr.Blocks(title="销售机器人") as blocks:
+  with gr.Blocks(title="聊天机器人") as blocks:
     with gr.Row():
       with gr.Column(scale=1):
         with gr.Row():
           scene_radio = gr.Radio(
             [(member.name, member.value) for member in SceneEnum],
-            label="切换场景",
-            info="选择一个要咨询的场景",
-            value=SceneEnum.房产
+            label="切换话题",
+            info="请选择希望咨询的话题",
+            value=SceneEnum.家装
           )
           enable_chat_checkbox = gr.Checkbox(
-            label="激活 AI",
-            info="通过 AI 更好的回答问题",
+            label="使用 GPT",
+            info="通过 GPT 更智能的回答问题",
             value=ENABLE_CHAT,
           )
       with gr.Column(scale=4):
