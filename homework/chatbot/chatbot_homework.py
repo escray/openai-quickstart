@@ -82,10 +82,9 @@ def launch_gradio():
   demo.launch(share=True, server_name="0.0.0.0")
 
 def launch_gradio_by_blocks():
+
   with gr.Blocks(title="聊天机器人") as blocks:
-    # with gr.Row():
-    #   with gr.Column(scale=1):
-    #     with gr.Row():
+
     scene_radio = gr.Radio(
       [(member.name, member.value) for member in SceneEnum],
       label="切换话题",
@@ -97,9 +96,9 @@ def launch_gradio_by_blocks():
       info="通过 GPT 更智能的回答问题",
       value=ENABLE_CHAT,
     )
-      # with gr.Column(scale=4):
+
     chatbot = gr.Chatbot([], elem_id="chatbot")
-        # with gr.Row():
+
     txt = gr.Textbox(
       scale=4,
       show_label=False,
